@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Change as you needed
+
+wlr-randr --output DP-1 --mode 1920x1080@143.854996 --adaptive-sync enabled &
+
+# Starts Waybar
+waybar &
+
+# nm-applet &
+blueman-applet &
+# ibus-daemon -drx &
+
+
+# Configurar el fondo de pantalla
+swaybg -i /your/path/ -m fill &

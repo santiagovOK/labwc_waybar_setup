@@ -1,0 +1,121 @@
+/* --------------------------------------------------------------
+   Waybar Styles (CSS). You can change colors, fonts,
+   margins, etc. Selectors use the JSON structure.
+   -------------------------------------------------------------- */
+
+    /*
+#  Colors used in this Light Waybar Theme. This is just for reference.
+    --foreground : #242639;
+    --background : #AECCE6;
+    --blue	     : #464CE1;
+    --red	     : #DF373A;
+    --violet	 : #7F00FF;
+    --slate-grey : #708090;
+
+
+        "height": 35,
+    "spacing": 2,
+    "margin-top": 0,
+    "margin-bottom": 0,
+    "margin-left": 0,
+    "margin-right": 0,
+*/
+
+/* global */
+* {
+        
+    border: none;
+    min-height: 22px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    font-family: "JetBrains Mono", "Noto Sans", sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* Bar background */
+#waybar {
+    background: rgba(46, 52, 64, 0.85);   /* base color (Nord) with 85% opacity */
+    color: #d8dee9;                      /* default text color */
+}
+
+/* Separator between modules */
+#waybar > .module {
+    padding: 2px;          /* internal horizontal spacing */
+    margin: 2px;           /* external spacing between modules */
+}
+
+#taskbar {
+    border-radius: 8px;
+    padding: 0 3px;
+    background-color: rgba(120,118,117,0.3);
+}   
+
+#taskbar button {
+/*     min-width: 30px; */
+    font-size: 4px;
+    border-radius: 3px;
+    padding: 0 3px;
+/*     color: wheat; */
+    background-color: rgba(120,118,117,0.1);
+}
+
+#taskbar button.active {
+    background-color: rgba(120,118,117,0.8);
+}   
+
+/* Specific style for the clock */
+#clock {
+    color: wheat;
+}
+
+/* Network icon (wifi/ethernet) */
+#network {
+    box-shadow: none;
+    text-shadow: none;
+    padding: 0px;
+    border-radius: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding-right: 4px;
+    padding-left: 4px;
+/*     color: #242639; */
+}
+
+#disk {
+    box-shadow: none;
+    text-shadow: none;
+    padding: 0px;
+    border-radius: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding-right: 4px;
+    padding-left: 4px;
+/*         color: #242639; */
+}
+
+/* Audio */
+#pulseaudio {
+    color: #e5e9f0;          /* gris claro */
+}
+
+/* Battery */
+#battery {
+    color: #bf616a;          /* rojo suave (advertencia) */
+}
+
+/* (system tray) */
+#tray {
+    padding: 3px;            /* space between icons */
+}
+
+/* Tooltip */
+tooltip {
+    background: #3b4252;
+    color: #eceff4;
+    border-radius: 4px;
+    padding: 6px;
+}
+

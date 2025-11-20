@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+
+<!--
+  This is a very simple config file with many options missing. For a complete
+  set of options with comments, see docs/rc.xml.all
+-->
+
+<labwc_config>
+  <!-- Screen -->
+  <margin top="0" bottom="0" left="0.3" right="0.3"/>
+  
+    <!-- Define snap regions for quarter screen placement -->
+  <regions>
+    <!-- 50% left and right sides -->
+    <region name="left-50"     x="0%"   y="0%"   width="50%" height="100%" />
+    <region name="right-50"    x="50%"  y="0%"   width="50%" height="100%" />
+    
+    <!-- 35% left and 65% right -->
+    <region name="left-35"     x="0%"   y="0%"   width="35%" height="100%" />
+    <region name="right-65"    x="35%"  y="0%"   width="65%" height="100%" />
+    
+    <!-- 65% left and 35% right -->
+    <region name="left-65"     x="0%"   y="0%"   width="65%" height="100%" />
+    <region name="right-35"    x="65%"  y="0%"   width="35%" height="100%" />
+    
+    <!-- Custom centered region: 17% from left, 2% from top, 65% width, 95% height -->
+    <region name="centered-custom" x="17%" y="2%" width="65%" height="95%" />
+  </regions>
+  
+  <theme>
+    <name>Nightmare-04</name>
+    <!--
+      available characters are NDSLIMC, each can occur at most once.
+      N: window icon
+      L: window label (AKA title).
+      I: iconify
+      M: maximize
+      C: close
+      S: shade (roll up/down)
+      D: omnipresent (on all desktops).
+  -->
+    <font place="ActiveWindow">
+      <name>Monospace</name>
+      <size>8</size>
+      <!-- font size in points -->
+      <weight>Bold</weight>
+      <!-- 'bold' or 'normal' -->
+      <slant>Italic</slant>
+      <!-- 'italic' or 'normal' -->
+    </font>
+    <font place="InactiveWindow">
+      <name>Monospace</name>
+      <size>8</size>
+      <!-- font size in points -->
+      <weight>Bold</weight>
+      <!-- 'bold' or 'normal' -->
+      <slant>Italic</slant>
+      <!-- 'italic' or 'normal' -->
+    </font>
+    <font place="MenuHeader">
+      <name>Monospace</name>
+      <size>8</size>
+      <!-- font size in points -->
+      <weight>Bold</weight>
+      <!-- 'bold' or 'normal' -->
+      <slant>Italic</slant>
+      <!-- 'italic' or 'normal' -->
+    </font>
+    <font place="MenuItem">
+      <name>Monospace</name>
+      <size>8</size>
+      <!-- font size in points -->
+      <weight>Bold</weight>
+      <!-- 'bold' or 'normal' -->
+      <slant>Italic</slant>
+      <!-- 'italic' or 'normal' -->
+    </font>
+    <font place="ActiveOnScreenDisplay">
+      <name>Monospace</name>
+      <size>8</size>
+      <weight>Bold</weight>
+      <slant>Italic</slant>
+    </font>
+    <font place="InactiveOnScreenDisplay">
+      <name>Monospace</name>
+      <size>8</size>
+      <weight>Bold</weight>
+      <slant>Italic</slant>
+    </font>
+  </theme>
+  
+  <desktops>
+    <!-- this stuff is only used at startup, pagers allow you to change them
+       during a session
+
+       these are default values to use when other ones are not already set
+       by other applications, or saved in your session
+
+       use obconf if you want to change these without having to log out
+       and back in -->
+    <number>5</number>
+    <firstdesk>1</firstdesk>
+    <names>
+      <name>- 1 -</name>
+      <name>- 2 -</name>
+      <name>- 3 -</name>
+      <name>- 4 -</name>
+      <name>- 5 - </name>
+    </names>
+    <popupTime>600</popupTime>
+    <!-- The number of milliseconds to show the popup for when switching
+       desktops.  Set this to 0 to disable the popup. -->
+  </desktops>
+
+  <keyboard>
+    <default />
+    <!-- Use a different terminal emulator -->
+    <keybind key="W-Return">
+      <action name="Execute" command="foot" />
+    </keybind>
+    <!--
+      Remove a previously defined keybind
+      A shorter alternative is <keybind key="W-F4" />
+    -->
+    <keybind key="W-F4">
+      <action name="None" />
+    </keybind>
+    <keybind key="A-space">
+      <action name="Execute">
+      <command>fuzzel</command>
+        <!-- <command>rofi -show drun</command> -->
+      </action>
+    </keybind>
+    <keybind key="C-A-t">
+      <action name="Execute">
+        <command>alacritty</command>
+      </action>
+    </keybind>
+
+   <!-- 50/50 split -->
+    <keybind key="W-Left">
+      <action name="SnapToRegion" region="left-50" />
+    </keybind>
+    <keybind key="W-Right">
+      <action name="SnapToRegion" region="right-50" />
+    </keybind>
+    
+    <!-- 35/65 split -->
+    <keybind key="W-z">
+      <action name="SnapToRegion" region="left-35" />
+    </keybind>
+    <keybind key="C-S-Right"> 
+      <action name="SnapToRegion" region="right-65" />
+    </keybind>
+    
+    <!-- 65/35 split -->
+    <keybind key="C-S-Left">
+      <action name="SnapToRegion" region="left-65" />
+    </keybind>
+    <keybind key="W-c">
+      <action name="SnapToRegion" region="right-35" />
+    </keybind>
+
+    <!-- Custom centered layout -->
+    <keybind key="W-x">
+      <action name="SnapToRegion" region="centered-custom" />
+    </keybind>
+
+    <!-- Mover ventana al workspace izquierdo y seguirla -->
+    <keybind key="C-Left">
+      <action name="SendToDesktop"><to>left</to></action>
+    </keybind>
+    
+    <!-- Mover ventana al workspace derecho y seguirla -->
+    <keybind key="C-Right">
+      <action name="SendToDesktop"><to>right</to></action>
+    </keybind>
+
+    <!-- Maximize window -->
+    <keybind key="W-space">
+      <action name="ToggleMaximize"/>
+    </keybind>
+
+    <!-- Navigate to next/previous desktop -->
+    <keybind key="C-A-Right">
+      <action name="GoToDesktop"><to>right</to></action>
+    </keybind>
+    
+    <keybind key="C-A-Left">
+      <action name="GoToDesktop"><to>left</to></action>
+    </keybind>
+
+    <keybind key="Print">
+        <!--
+            1. slurp → user drags a rectangle → prints geometry (e.g. 100,200 300x400)
+            2. grim -g "$(slurp)" -      → capture that geometry, write PNG to stdout
+            3. swappy -f -               → read PNG from stdin (-f forces opening), edit,
+                                          → on close writes the annotated PNG to clipboard
+            The whole pipeline runs in a single shell command.
+        -->
+        <action name="Execute">
+            <command>
+                sh -c 'grim -g "$(slurp)" - | swappy -f -'
+            </command>
+        </action>
+    </keybind>
+
+  </keyboard>
+
+  <mouse>
+    <default />
+    <!-- Show a custom menu on desktop right click -->
+    <context name="Root">
+      <mousebind button="Left" action="Press">
+        <action name="ShowMenu" menu="some-custom-menu" />
+      </mousebind>
+    </context>
+  </mouse>
+
+</labwc_config>

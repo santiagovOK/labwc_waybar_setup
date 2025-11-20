@@ -41,7 +41,7 @@ This will be a Bash orchestration script to automate the installation of a minim
 | :--- | :--- |
 | **`main.sh`** | The entry point. Initializes logging and runs steps in order. |
 | **`lib/`** | Contains `utils.sh` (logging colors, error traps, validation functions). |
-| **`steps/`** | Numbered scripts (e.g., `00_preflight.sh`) containing the actual logic. |
+| **`steps/`** | Numbered scripts containing the actual logic. |
 | **`config/`** | Source dotfiles for Labwc and Waybar (symlinked during install). |
 | **`logs/`** | Auto-generated logs for every installation attempt. |
 | **`img/`** | Image source files. |

@@ -40,6 +40,7 @@ UTIL_PACKAGES=(
     "xdg-user-dirs"
     "bash-completion"
     "htop"
+    "radeontop" # For AMD GPU
     "locales"
 )
 

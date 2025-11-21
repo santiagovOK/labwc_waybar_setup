@@ -74,19 +74,13 @@
       <!-- 'bold' or 'normal' -->
       <slant>Italic</slant>
       <!-- 'italic' or 'normal' -->
-    </font>
-    <font place="ActiveOnScreenDisplay">
+    <font place="OnScreenDisplay">
       <name>Monospace</name>
       <size>8</size>
       <weight>Bold</weight>
       <slant>Italic</slant>
     </font>
-    <font place="InactiveOnScreenDisplay">
-      <name>Monospace</name>
-      <size>8</size>
-      <weight>Bold</weight>
-      <slant>Italic</slant>
-    </font>
+    </theme>
   </theme>
   
   <desktops>

@@ -73,6 +73,7 @@
       <weight>Bold</weight>
       <!-- 'bold' or 'normal' -->
       <slant>Italic</slant>
+    </font>
       <!-- 'italic' or 'normal' -->
     <font place="OnScreenDisplay">
       <name>Monospace</name>

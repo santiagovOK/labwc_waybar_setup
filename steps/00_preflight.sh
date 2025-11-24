@@ -125,7 +125,6 @@ CORE_PACKAGES=(
     "wget"
     "git"
     "unzip"
-    "software-properties-common"
 )
 
 log_info "Verifying core dependencies..."

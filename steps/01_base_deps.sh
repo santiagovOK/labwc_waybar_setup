@@ -15,7 +15,6 @@ log_step "Step 01: Base Session, Audio & Hardware"
 PACKAGES=(
     "dbus-user-session"
     "libpam-systemd"
-    "policykit-1"
     "seatd"
     "libseat1"
     "firmware-realtek"

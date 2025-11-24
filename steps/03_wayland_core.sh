@@ -42,6 +42,7 @@ CORE_TOOLS=(
     "wlr-randr"
     "x11-utils"
     "flatpak" 
+    "seahorse" # GUI for keyrings
 )
 log_info "Installing Core Tools..."
 for pkg in "${CORE_TOOLS[@]}"; do
@@ -56,6 +57,7 @@ MEDIA_APPS=(
     "atril"
     "swayimg"
     "gnome-calculator"
+    "file-roller"
 )
 log_info "Installing Native Media Tools..."
 for pkg in "${MEDIA_APPS[@]}"; do

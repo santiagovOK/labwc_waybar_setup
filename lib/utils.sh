@@ -160,6 +160,7 @@ check_internet() {
     fi
 }
 
+# Only returns 0 if the package status is exactly "installed"
 is_installed() {
-    dpkg -l "$1" &> /dev/null
+    dpkg-query -W -f='${Status}' "$1" 2>/dev/null | grep -q "install ok installed"
 }

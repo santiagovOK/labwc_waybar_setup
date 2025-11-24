@@ -17,14 +17,12 @@ PACKAGES=(
     "xwayland"
     "libgl1-mesa-dri"
     "libglx-mesa0"
-    "libegl1-mesa"
     "mesa-vulkan-drivers"
     "mesa-utils"
     "vulkan-tools"
     "drm-info"
     "mesa-va-drivers"
     "libva-drm2"
-    "libva-utils"
 )
 
 # Check Intel

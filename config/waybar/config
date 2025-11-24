@@ -62,8 +62,9 @@
         "scroll": true,
         "max-length": 40
     },
-    // Enhanced clock
+    // Enhanced clock (change timezone if you need to)
     "clock": {
+        "timezone": "America/Argentina/Buenos_Aires",
         "format": "{:%a %d %b %H:%M}",
         "format-alt": "{:%Y-%m-%d %H:%M:%S}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",

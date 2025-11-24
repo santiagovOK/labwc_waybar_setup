@@ -124,7 +124,7 @@ if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
         # Safe read to prevent EOF crash
         read -r -d '' BASH_BLOCK << EOM || true
 $MARKER
-# Added by install.sh on $(date +%Y-%m-%d)
+# Added by main.sh on $(date +%Y-%m-%d)
 
 # 1. Environment Variables
 export MOZ_ENABLE_WAYLAND=1

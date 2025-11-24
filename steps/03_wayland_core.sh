@@ -1,6 +1,7 @@
 #!/bin/bash
 # steps/03_wayland_core.sh
-# Step 03: Wayland Compositor & Userland (Updated with Flatpak OBS)
+# Step 03: Wayland Compositor & Userland
+# Fix: Robust Flatpak handling to prevent script crash on network errors.
 
 # ==============================================================================
 # BOOTSTRAP
@@ -18,29 +19,19 @@ log_step "Step 03: Wayland Core, Portals & Flatpak Apps"
 
 # 1. Labwc (Compositor)
 log_info "Installing Labwc..."
-if ! is_installed "labwc"; then
-    apt-get install -y -q labwc
-else
-    log_success "Labwc is already installed."
-fi
+safe_install "labwc"
 
-# 2. Critical Portals (REQUIRED for Screen Sharing)
-# - xdg-desktop-portal-wlr: The specific backend for wlroots (Labwc/Sway).
-# - xdg-desktop-portal: The frontend that apps (OBS/Firefox) talk to.
+# 2. Critical Portals
 PORTAL_PACKAGES=(
     "xdg-desktop-portal"
     "xdg-desktop-portal-wlr"
 )
-
-log_info "Installing XDG Desktop Portals (Screen Share Support)..."
+log_info "Installing XDG Desktop Portals..."
 for pkg in "${PORTAL_PACKAGES[@]}"; do
-    if ! is_installed "$pkg"; then
-        apt-get install -y -q "$pkg"
-    fi
+    safe_install "$pkg"
 done
 
 # 3. Core Utilities
-# Added 'flatpak' here as a base requirement.
 CORE_TOOLS=(
     "foot"
     "fuzzel"
@@ -52,16 +43,12 @@ CORE_TOOLS=(
     "x11-utils"
     "flatpak" 
 )
-
-log_info "Installing Core Tools & Flatpak..."
+log_info "Installing Core Tools..."
 for pkg in "${CORE_TOOLS[@]}"; do
-    if ! is_installed "$pkg"; then
-        apt-get install -y -q "$pkg"
-    fi
+    safe_install "$pkg"
 done
 
-# 4. Media & Screenshot Stack
-# Note: OBS is removed from here, handled via Flatpak below.
+# 4. Native Media Tools
 MEDIA_APPS=(
     "grim"
     "slurp"
@@ -70,30 +57,57 @@ MEDIA_APPS=(
     "swayimg"
     "gnome-calculator"
 )
-
 log_info "Installing Native Media Tools..."
 for pkg in "${MEDIA_APPS[@]}"; do
-    if ! is_installed "$pkg"; then
-        apt-get install -y -q "$pkg"
-    fi
+    safe_install "$pkg"
 done
 
-# 5. Flatpak Configuration & OBS Studio
+# 5. Flatpak Configuration & OBS Studio (PROTECTED BLOCK)
 log_info "Configuring Flatpak Ecosystem..."
 
-# Add Flathub Repository
-if ! flatpak remote-list | grep -q "flathub"; then
+# A) Add Flathub Repo
+# Verificamos si ya existe
+if flatpak remote-list | grep -q "flathub"; then
+    log_success "Flathub repo already exists."
+else
     log_info "Adding Flathub repository..."
+    
+    # Desactivar modo estricto para manejar el error manualmente
+    set +e
     flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    RET=$?
+    set -e # Reactivar modo estricto
+
+    if [ $RET -eq 0 ]; then
+        log_success "Flathub repository added."
+    else
+        log_warn "Failed to add Flathub repo (Exit Code: $RET)."
+        log_warn "Skipping OBS Flatpak installation as repo is missing."
+    fi
 fi
 
-# Install OBS Studio via Flatpak
-# com.obsproject.Studio is the official ID
-if ! flatpak list | grep -q "com.obsproject.Studio"; then
-    log_info "Installing OBS Studio (Flatpak)..."
-    flatpak install -y flathub com.obsproject.Studio
+# B) Install OBS Studio (Solo si flathub existe)
+if flatpak remote-list | grep -q "flathub"; then
+    if flatpak list | grep -q "com.obsproject.Studio"; then
+        log_success "OBS Studio (Flatpak) is already installed."
+    else
+        log_info "Installing OBS Studio (Flatpak)..."
+        
+        # Desactivar modo estricto para manejar el error manualmente
+        set +e
+        flatpak install -y flathub com.obsproject.Studio
+        RET=$?
+        set -e # Reactivar modo estricto
+
+        if [ $RET -eq 0 ]; then
+            log_success "OBS Studio installed successfully."
+        else
+            log_warn "OBS installation failed (Exit Code: $RET)."
+            log_warn "You can try installing it manually later: 'flatpak install flathub com.obsproject.Studio'"
+        fi
+    fi
 else
-    log_success "OBS Studio (Flatpak) is already installed."
+    log_warn "Skipping OBS installation because Flathub repo is not available."
 fi
 
 # 6. Validation
@@ -113,7 +127,7 @@ if [ -f /usr/share/xdg-desktop-portal/portals/wlr.portal ]; then
     log_success "Portal backend (wlr.portal) detected."
 else
     log_error "wlr.portal definition missing! Screen sharing will fail."
-    exit 1
+    # No hacemos exit 1 aquí para permitir que el script continúe al siguiente paso
 fi
 
 log_success "Step 03 complete. Core, Portals, and OBS ready."

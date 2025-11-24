@@ -62,55 +62,102 @@ for pkg in "${MEDIA_APPS[@]}"; do
     safe_install "$pkg"
 done
 
-# 5. Flatpak Configuration & OBS Studio (PROTECTED BLOCK)
+# 5. Web Browsers (Brave)
+# We check if it is already installed to avoid running the install script every time
+if command -v brave-browser >/dev/null 2>&1; then
+    log_success "Brave Browser is already installed."
+else
+    log_info "Installing Brave Browser (via Official Script)..."
+    
+    # We disable 'set -e' so a network failure doesn't kill the entire installer
+    set +e
+    
+    # Execute the official installer
+    curl -fsS https://dl.brave.com/install.sh | sh
+    EXIT_CODE=$?
+    
+    set -e # Re-enable strict mode
+
+    if [ $EXIT_CODE -eq 0 ]; then
+        log_success "Brave Browser installed successfully."
+    else
+        log_warn "Failed to install Brave Browser (Exit Code: $EXIT_CODE)."
+        log_warn "Check internet connection or install manually later."
+    fi
+fi
+
+# 6. Flatpak Configuration & Multimedia Apps (Interactive)
 log_info "Configuring Flatpak Ecosystem..."
 
-# A) Add Flathub Repo
-# Verificamos si ya existe
+# A) Add Flathub Repo (Prerequisite)
 if flatpak remote-list | grep -q "flathub"; then
     log_success "Flathub repo already exists."
 else
     log_info "Adding Flathub repository..."
     
-    # Desactivar modo estricto para manejar el error manualmente
+    # Disable strict mode to handle network errors manually
     set +e
     flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     RET=$?
-    set -e # Reactivar modo estricto
+    set -e # Re-enable strict mode
 
     if [ $RET -eq 0 ]; then
         log_success "Flathub repository added."
     else
         log_warn "Failed to add Flathub repo (Exit Code: $RET)."
-        log_warn "Skipping OBS Flatpak installation as repo is missing."
+        log_warn "Skipping Flatpak app installation as repo is missing."
+        # We set a flag to skip the next block
+        FLATHUB_MISSING=true
     fi
 fi
 
-# B) Install OBS Studio (Solo si flathub existe)
-if flatpak remote-list | grep -q "flathub"; then
-    if flatpak list | grep -q "com.obsproject.Studio"; then
-        log_success "OBS Studio (Flatpak) is already installed."
-    else
-        log_info "Installing OBS Studio (Flatpak)..."
+# B) Interactive App Installation
+if [ "$FLATHUB_MISSING" != "true" ]; then
+    
+    echo ""
+    echo -e "${Y}Optional Multimedia Apps (Flatpak):${N}"
+    echo "  1. OBS Studio (Screen Recording & Streaming)"
+    echo "  2. Kdenlive (Professional Video Editor)"
+    
+    read -r -p "Do you want to install these multimedia apps? [y/N] " response
+
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
         
-        # Desactivar modo estricto para manejar el error manualmente
-        set +e
-        flatpak install -y flathub com.obsproject.Studio
-        RET=$?
-        set -e # Reactivar modo estricto
+        # Helper function to install Flatpaks safely (Internal use only)
+        install_flatpak_safe() {
+            local app_id="$1"
+            local app_name="$2"
 
-        if [ $RET -eq 0 ]; then
-            log_success "OBS Studio installed successfully."
-        else
-            log_warn "OBS installation failed (Exit Code: $RET)."
-            log_warn "You can try installing it manually later: 'flatpak install flathub com.obsproject.Studio'"
-        fi
+            if flatpak list | grep -q "$app_id"; then
+                log_success "$app_name is already installed."
+            else
+                log_info "Installing $app_name..."
+                
+                # Soft Fail Protection
+                set +e
+                flatpak install -y flathub "$app_id"
+                RET=$?
+                set -e
+
+                if [ $RET -eq 0 ]; then
+                    log_success "$app_name installed successfully."
+                else
+                    log_warn "Failed to install $app_name (Exit Code: $RET)."
+                    log_warn "You can try manually: 'flatpak install flathub $app_id'"
+                fi
+            fi
+        }
+
+        # Install the requested apps
+        install_flatpak_safe "com.obsproject.Studio" "OBS Studio"
+        install_flatpak_safe "org.kde.kdenlive" "Kdenlive"
+
+    else
+        log_info "Skipping multimedia apps by user request."
     fi
-else
-    log_warn "Skipping OBS installation because Flathub repo is not available."
 fi
 
-# 6. Validation
+# 7. Validation
 log_info "Verifying critical binaries..."
 REQUIRED=("labwc" "swappy" "flatpak")
 

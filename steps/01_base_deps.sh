@@ -26,6 +26,7 @@ PACKAGES=(
     "bash-completion"
     "htop"
     "locales"
+    "libfuse2t64"
 )
 
 log_info "Installing Base Dependencies..."

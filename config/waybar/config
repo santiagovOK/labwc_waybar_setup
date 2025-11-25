@@ -14,8 +14,9 @@
         "clock"
     ],
 
+    
     "modules-right": [
-        "custom/custom.sh",
+        "custom/custom.sh", /* for custom script */
         "custom/separator",
 /*         "idle_inhibitor", */
         "custom/separator",

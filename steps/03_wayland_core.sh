@@ -38,6 +38,7 @@ CORE_TOOLS=(
     "swaybg"
     "swaylock"
     "swayidle"
+    "playerctl"
     "wl-clipboard"
     "wlr-randr"
     "x11-utils"

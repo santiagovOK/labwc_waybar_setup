@@ -27,6 +27,7 @@ PACKAGES=(
     "htop"
     "locales"
     "libfuse2t64"
+    "mate-polkit"
 )
 
 log_info "Installing Base Dependencies..."

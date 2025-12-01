@@ -19,6 +19,7 @@ PACKAGES=(
     "blueman"
     "network-manager-gnome"
     "jq"
+    "gparted"
 )
 
 log_info "Installing Waybar components..."

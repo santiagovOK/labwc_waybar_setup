@@ -1,5 +1,17 @@
 #!/bin/sh
 
+# Polkit Authentication Agent (MATE)
+# Checks multiple paths to ensure it works on Debian Stable, Testing, and Unstable
+if [ -f /usr/libexec/polkit-mate-authentication-agent-1 ]; then
+    /usr/libexec/polkit-mate-authentication-agent-1 &
+elif [ -f /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 ]; then
+    /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
+fi
+
+#To allow root to draw windows on User's screen (Gparted).
+
+xhost +si:localuser:root
+
 # Change as you needed
 
 # wlr-randr --output DP-1 --mode 1920x1080@143.854996 --adaptive-sync enabled &
